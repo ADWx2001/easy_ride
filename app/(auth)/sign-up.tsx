@@ -13,6 +13,7 @@ import { fetchAPI } from "@/lib/fetch";
 
 const SignUp = () => {
   const { isLoaded, signUp, setActive } = useSignUp();
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [form, setform] = useState({
     name: "",
     email: "",
@@ -156,9 +157,11 @@ const SignUp = () => {
         {/* verification model */}
         <ReactNativeModal
           isVisible={verification.state === "pending"}
-          onModalHide={() =>
-            setverification({ ...verification, state: "success" })
-          }
+          onModalHide={() => {
+            if (verification.state === "success") {
+              setShowSuccessModal(true);
+            }
+          }}
         >
           <View className="bg-white px-7 py-9 rounded-xl min-h-[300px]">
             <Text className="text-2xl font-JakartaBold mb-2">Verification</Text>
@@ -193,7 +196,7 @@ const SignUp = () => {
         </ReactNativeModal>
 
         {/* verification model */}
-        <ReactNativeModal isVisible={verification.state === "success"}>
+        <ReactNativeModal isVisible={showSuccessModal}>
           <View className="bg-white px-7 py-9 rounded-xl min-h-[300px]">
             <Image
               source={images.check}
